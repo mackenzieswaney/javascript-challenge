@@ -1,49 +1,61 @@
+  
 // from data.js
-
 var tableData = data;
-console.log(tableData);
 
-// Get a reference to the table body
+// YOUR CODE HERE!
+// Reference table body
 var tbody = d3.select("tbody");
 
-// Console.log the weather data from data.js
-console.log(data);
+// Loop through sighting data
+data.forEach((sighting) => {
 
- data.forEach(function(sightingReport) {
-  console.log(sightingReport);
-  var row = tbody.append("tr");
-   Object.entries(sightingReport).forEach(function([key, value]) {
-     console.log(key, value);
-     var cell = tbody.append("td");
-     cell.text(value);
-   });
- });
+    // Create new row within table body
+    var row = tbody.append("tr");
 
+    // Grab sighting data keys and values
+    Object.entries(sighting).forEach(([key, value]) => {
 
- var submit = d3.select("#submit");
+        // Create new cell in row for each value within sighting data
+        var cell = row.append("td");
 
- // function to take input and recreate table
- submit.on("click", function() {
-   // stops page from refreshing
-   d3.event.preventDefault();
- 
-   d3.select(".summary").html("");
- 
-   // user input as variable
-   var inputElement = d3.select("#datetime");
-   var inputValue = inputElement.property("value");
- 
-   // Filter Data
-   var filteredData = tableData.filter(tableData => tableData.datetime === inputValue);
- 
-   // loop through
-   filteredData.forEach((dateData) => {
-     var row = tbody.append("tr");
-     Object.entries(dateData).forEach(([key, value]) => {
-       var cell = tbody.append("td");
-       cell.text(value);
-     });
-   });
- });
+        // Put value text in cell
+        cell.text(value);
+    });
+});
 
-// dateInput.on("change", clickSelect);
+// Select button
+var button = d3.select("#filter-btn");
+
+// Function for when button is clicked
+button.on("click", function() {
+    
+    // Reference date input field
+    var dateInput = d3.select("#datetime");
+
+    // Reference date input value within the input field
+    var dateValue = dateInput.property("value");
+
+    // filter tableData date column based on the date input value
+    var filteredDate = tableData.filter(sighting => sighting.datetime === dateValue);  
+    console.log(filteredDate);
+    
+    // Clear anthing already in tbody
+    tbody.html("");
+
+    // Loop through FilteredSighting data
+    filteredDate.forEach((FilteredSighting) => {
+        
+        // Create new row within table body
+        var row = tbody.append("tr");
+            
+        // Grab sighting data keys and values
+        Object.entries(FilteredSighting).forEach(([key, value]) => {
+            
+            // Create new cell in row for each value within sighting data
+            var cell = row.append("td");
+            
+             // Put value text in cell
+             cell.text(value);     
+        });         
+    });
+});
